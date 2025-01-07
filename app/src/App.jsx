@@ -5,6 +5,7 @@ import KnowPage from "./Pages/knowmore-page"
 import UserProfile from "./Pages/user-profile"
 import AuthPage from "./Pages/auth-page"
 import SignUpPage from "./Pages/signup-page"
+import ResumeUploader from "./Pages/ResumeUploader"
 
 function App(){
 
@@ -17,6 +18,7 @@ function App(){
       <Route path="/profile" element={<UserProfile/>}/>
       <Route path="/login" element={<AuthPage/>}/>
       <Route path="/signup" element={<SignUpPage/>}/>
+      <Route path="/resume" element={<ResumeUploader/>}/>
     </Routes>
     </>
   )

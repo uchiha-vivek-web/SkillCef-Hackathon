@@ -1,12 +1,40 @@
-import { Link } from "react-router-dom"
-
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { signInWithEmailAndPassword ,signInWithPopup,signOut} from "firebase/auth";
+import { auth,googleProvider } from "../config/firebase";
 
 function AuthPage() {
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const navigate = useNavigate();
+    const GoogleSignIn = async() => {
+           try {
+              await signInWithPopup(auth,googleProvider)
+              navigate('/')
+           }catch(error){ 
+            console.log(error)
+           }
+    }
+    const handleLogin = async () => {
+        try {
+            await signInWithEmailAndPassword(auth, email, password);
+            console.log("Login successful");
+            navigate("/"); 
+        } catch (error) {
+            console.error("Error logging in:", error.message);
+            alert("Login failed. Please check your credentials.");
+        }
+    };
+
     return (
         <>
-            <img src="https://uploads-ssl.webflow.com/646f65e37fe0275cfb808405/646f66cdeeb4ddfdae25a26e_Background%20Hero.svg" alt="" className="absolute -z-10 inline-block h-screen w-full object-cover" />
+            <img
+                src="https://uploads-ssl.webflow.com/646f65e37fe0275cfb808405/646f66cdeeb4ddfdae25a26e_Background%20Hero.svg"
+                alt=""
+                className="absolute -z-10 inline-block h-screen w-full object-cover"
+            />
             <div className="py-16">
-                <div class="flex bg-transparent border-white text-white rounded-lg shadow-lg overflow-hidden mx-auto max-w-sm lg:max-w-4xl">
+                <div className="flex bg-transparent border-white text-white rounded-lg shadow-lg overflow-hidden mx-auto max-w-sm lg:max-w-4xl">
                     <div
                         className="hidden lg:block lg:w-1/2 bg-cover"
                         style={{
@@ -14,10 +42,10 @@ function AuthPage() {
                         }}
                     ></div>
 
-                    <div class="w-full p-8 lg:w-1/2">
-                        <h2 class="text-2xl font-semibold text-white text-center">Brand</h2>
-                        <p class="text-xl  text-center text-white">Welcome back!</p>
-                        <a href="#" class="flex items-center justify-center mt-4 text-white rounded-lg shadow-md hover:bg-gray-100">
+                    <div className="w-full p-8 lg:w-1/2">
+                        <h2 className="text-2xl font-semibold text-white text-center">Brand</h2>
+                        <p className="text-xl text-center text-white">Welcome back!</p>
+                        <button onClick={GoogleSignIn} href="#" class="flex items-center justify-center mt-4 text-white rounded-lg shadow-md hover:bg-gray-100">
                             <div class="px-4 py-3">
                                 <svg class="h-6 w-6" viewBox="0 0 40 40">
                                     <path
@@ -35,35 +63,57 @@ function AuthPage() {
                                 </svg>
                             </div>
                             <h1 class="px-4 py-3 w-5/6 text-center bg-yellow-400 text-black font-mono">Sign in with Google</h1>
-                        </a>
+                        </button>
                         <div class="mt-4 flex items-center justify-between">
                             <span class="border-b w-1/5 lg:w-1/4"></span>
                             <a href="#" class="text-xs text-center text-gray-400 uppercase">or login with email</a>
                             <span class="border-b w-1/5 lg:w-1/4"></span>
                         </div>
-                        <div class="mt-4">
-                            <label class="block text-gray-400 text-sm font-bold mb-2">Email Address</label>
-                            <input class="bg-gray-200 text-gray-400 focus:outline-none focus:shadow-outline border border-gray-300 rounded py-2 px-4 block w-full appearance-none" type="email" />
+
+                        <div className="mt-4">
+                            <label className="block text-gray-400 text-sm font-bold mb-2">Email Address</label>
+                            <input
+                                className="bg-gray-200 text-gray-400 focus:outline-none focus:shadow-outline border border-gray-300 rounded py-2 px-4 block w-full appearance-none"
+                                type="email"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                            />
                         </div>
-                        <div class="mt-4">
-                            <div class="flex justify-between">
-                                <label class="block text-gray-400 text-sm font-bold mb-2">Password</label>
-                                <a href="#" class="text-xs text-gray-500">Forget Password?</a>
+                        
+                        <div className="mt-4">
+                            <div className="flex justify-between">
+                                <label className="block text-gray-400 text-sm font-bold mb-2">Password</label>
+                                <a href="#" className="text-xs text-gray-500">
+                                    Forget Password?
+                                </a>
                             </div>
-                            <input class="bg-gray-200 text-gray-700 focus:outline-none focus:shadow-outline border border-gray-300 rounded py-2 px-4 block w-full appearance-none" type="password" />
+                            <input
+                                className="bg-gray-200 text-gray-700 focus:outline-none focus:shadow-outline border border-gray-300 rounded py-2 px-4 block w-full appearance-none"
+                                type="password"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                            />
                         </div>
-                        <div class="mt-8">
-                            <button class="bg-gray-700  text-white font-mono py-2 px-4 w-full rounded hover:bg-gray-600">Login</button>
+                        <div className="mt-8">
+                            <button
+                                onClick={handleLogin}
+                                className="bg-gray-700 text-white font-mono py-2 px-4 w-full rounded hover:bg-gray-600"
+                            >
+                                Login
+                            </button>
                         </div>
-                        <div class="mt-4 flex items-center justify-between">
-                            <span class="border-b w-1/5 md:w-1/4"></span>
-                            <Link to='/signup' class="text-xs text-gray-400 uppercase">or sign up</Link>
-                            <span class="border-b w-1/5 md:w-1/4"></span>
+                        <div className="mt-4 flex items-center justify-between">
+                            <span className="border-b w-1/5 md:w-1/4"></span>
+                            <Link to="/signup" className="text-xs text-gray-400 uppercase">
+                                or sign up
+                            </Link>
+                            <span className="border-b w-1/5 md:w-1/4"></span>
                         </div>
                     </div>
                 </div>
             </div>
         </>
-    )
+    );
 }
-export default AuthPage
+
+export default AuthPage;

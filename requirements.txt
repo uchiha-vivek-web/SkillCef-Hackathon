@@ -1,0 +1,16 @@
+streamlit
+PyPDF2
+langchain
+python-docx
+python-pptx
+pandas
+openai
+requests
+numpy
+Pillow
+beautifulsoup4
+opencv-python-headless
+tiktoken
+faiss-cpu
+langchain-community
+openpyxl
